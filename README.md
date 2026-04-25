@@ -1,24 +1,37 @@
-# Project Name: Weather App
+# Weather App
 
-# Overview:
+## Overview
 This is a console based weather app built using Python. It allows you to enter the city and view the weather. 
 
-# Features:
-- Get real-time weather with temperature and feels like temperature
-- Shows humidity and wind speed
+## Features
+- Search weather by city name
+- View temperature and “feels like” temperature, humidity and wind speed
+- Switch between Celsius and Fahrenheit
+- Shows sunrise and sunset times
+- Change city without restarting the app
 
-# Requirements:
-python3 
+## Requirements
+Python 3
+pip install requests
 
-# Setup:
+## Setup
 1. Go to https://openweathermap.org/api and get your api key.
-2. Open your program terminal and paste export WEATHER_API_KEY="your key"
+2. Set your API key as an environment variable:
+   Mac/Linux:
+   export WEATHER_API_KEY="your_api_key"
+   
+   Windows (Command Prompt):
+   set WEATHER_API_KEY=your_api_key
+   
+   Windows (PowerShell):
+   $env:WEATHER_API_KEY="your_api_key"
 
 
-# How to run:
+
+## How to run
 python3 main.py
    
-## Tech Stacks:
+## Tech Stacks
 - Python
-- Requests Library 
+- requests Library 
 - OpenWeatherMap API
