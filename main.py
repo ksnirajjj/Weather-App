@@ -29,7 +29,7 @@ def convertdate(time, offset):
 
     
 #display current weather
-def currentWeather():
+def currentWeather(data, offset):
     print("--------------------------------------------------------------")
     print(f"Showing weather for {cityName} on {getDate(data['dt'],offset)}")
     print(f"Temperature: {data['main']['temp']}")
@@ -42,45 +42,84 @@ def currentWeather():
     print(f"Sunrise: {convertdate(data['sys']['sunrise'], offset)}")
     print(f"Sunset: {convertdate(data['sys']['sunset'], offset)}")
 
-
+#get api key
 apiKey = os.getenv("WEATHER_API_KEY")
 
+#get weather from api
+def getWeatherFromAPi(url):
+    try:
+        response = requests.get(url)
+        data = response.json()
+
+        if(data['cod'] == "404"):
+            print(data['message'])
+        
+        else:
+            offset = data['timezone']
+            currentWeather(data, offset)
+
+    except:
+        print("Error Fetching Data!")
+
+
+
+#get units for temperature
+def getUnits():
+    while(True):
+        units = input("Would you like Celcius or Farenheit? ")
+        if (units.lower() == "celcius"):
+            units = "metric"
+            break; 
+        elif (units.lower() == "farenheit"):
+            units = "imperial"
+            break; 
+        else:
+            print("Invalid Unit Chosen!")
+
+    return units
+
+
+
+
+#get units for temperature
+units = getUnits()
+
 cityName = input("Which city would you like to get the weather for today? ")
-
-while(True):
-    units = input("Would you like Celcius or Farenheit? ")
-    if (units.lower() == "celcius"):
-        units = "metric"
-        break; 
-    elif (units.lower() == "farenheit"):
-        units = "imperial"
-        break; 
-    else:
-        print("Invalid Unit Chosen!")
-
-#validating city name
-
-
 url = f"https://api.openweathermap.org/data/2.5/weather?q={cityName}&appid={apiKey}&units={units}"
 
 
-#checking if the api works
-try:
-    response = requests.get(url)
-    data = response.json()
+choice = 0
+while(choice !=4 ):
+    #generating the menu
+    print("What would you like to do today? ")
+    print("1. Get Current Weather")
+    print("2. Change Units")
+    print("3. Search Another City")
+    print("4. Exit")
+    choice = int(input("Please enter your choice: "))
+    print(choice)
+    match choice:
+        case 1:
+            getWeatherFromAPi(url)
 
-    if(data['cod'] == "404"):
-        print(data['message'])
-    
-    else:
-        offset = data['timezone']
-        currentWeather()
+        case 2:
+            units = getUnits()
+            url = f"https://api.openweathermap.org/data/2.5/weather?q={cityName}&appid={apiKey}&units={units}"
+            getWeatherFromAPi(url)
 
-except:
-   print("Error Fetching Data!")
+        case 3:
+            cityName = input("Which city would you like to get the weather for today? ")
+            url = f"https://api.openweathermap.org/data/2.5/weather?q={cityName}&appid={apiKey}&units={units}"
+            getWeatherFromAPi(url)
+        
+        case 4:
+            print("See You Again!")
+        
+        case _:
+            print("Error in Choice")
 
-#display 
-
+    print("------------------------------------------------------------------------------------")
+            
 
 
 
